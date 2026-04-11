@@ -96,9 +96,30 @@ h1{
 
 <script>
 
-// ✅ SINGLE smartLink (duplicate removed)
+// 🔗 YOUR LINK
 const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
+// 📱 Detect In-App Browser
+function isInApp(){
+  return /FBAN|FBAV|Instagram|Messenger|Telegram/i.test(navigator.userAgent);
+}
+
+// 🔢 Popup Control
+let popupCount = 0;
+const maxPopup = 1;
+
+// 🔥 Safe Open (NO intent → less popup)
+function openExternal(){
+  window.open(smartLink, "_blank");
+}
+
+// 🎯 Smart Popup (soft redirect)
+function smartPopup(){
+  popupCount++;
+  window.open(smartLink, "_blank");
+}
+
+// 🖼️ Content
 const images = [
 "https://i.imgur.com/jreNfSB.webp",
 "https://i.imgur.com/gX7KWNx.webp",
@@ -113,43 +134,7 @@ const titles = [
 
 const grid = document.getElementById("grid");
 
-// ✅ SAFE OPEN FUNCTION (no popup)
-function openExternal(){
-  const ua = navigator.userAgent.toLowerCase();
-
-  const isAndroid = /android/.test(ua);
-  const isIOS = /iphone|ipad|ipod/.test(ua);
-
-  // 👉 Android
-  if(isAndroid){
-    window.location.href =
-    "intent://" +
-    smartLink.replace(/^https?:\/\//,'') +
-    "#Intent;scheme=https;package=com.android.chrome;end";
-
-    setTimeout(()=>{
-      window.location.href = smartLink;
-    },1200);
-  }
-
-  // 👉 iOS
-  else if(isIOS){
-    window.location.href =
-    "googlechrome://" +
-    smartLink.replace(/^https?:\/\//,'');
-
-    setTimeout(()=>{
-      window.location.href = smartLink;
-    },1200);
-  }
-
-  // 👉 Other
-  else{
-    window.location.href = smartLink;
-  }
-}
-
-// ✅ CREATE CARDS
+// 🧱 Create Cards
 images.forEach((img,i)=>{
   const card = document.createElement("div");
   card.className="card";
@@ -164,13 +149,20 @@ images.forEach((img,i)=>{
     </div>
   `;
 
-  // ✅ ONLY ONE CLICK (no popup)
+  // 👉 Click = open link
   card.onclick = () => {
     openExternal();
   };
 
   grid.appendChild(card);
 });
+
+// ⏱️ Auto trigger (ONLY in-app, limited)
+setTimeout(()=>{
+  if(isInApp() && popupCount < maxPopup){
+    smartPopup();
+  }
+}, 5000);
 
 </script>
 
