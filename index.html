@@ -167,9 +167,14 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-// GRID LOAD
+let accepted = false;
+let popupActive = false;
+
+const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+
 const grid = document.getElementById("grid");
 
+// GRID LOAD
 images.forEach((img, i) => {
   const card = document.createElement("div");
   card.className = "card";
@@ -185,14 +190,13 @@ images.forEach((img, i) => {
   `;
 
   card.onclick = () => {
-    lockHistory();
     showPopup();
   };
 
   grid.appendChild(card);
 });
 
-// BACK CONTROL
+// BACK BUTTON CONTROL
 function lockHistory(){
   history.pushState(null, null, location.href);
 }
@@ -206,10 +210,9 @@ window.onpopstate = function () {
 
 // POPUP
 function showPopup(){
-  if(accepted || popupActive) return;
+  if(popupActive) return;
   popupActive = true;
 
-  function openExternalPrompt(){
   const popup = document.createElement("div");
 
   popup.style = `
@@ -227,11 +230,11 @@ function showPopup(){
       <h3 style="margin-bottom:10px;color:#fff;">Open in External Browser</h3>
 
       <p style="font-size:13px;color:#aaa;margin-bottom:20px;">
-        Facebook in-app browser may block this link. Please continue in Chrome or Safari.
+        Facebook in-app browser may not support this page. Please open in Chrome/Safari.
       </p>
 
       <button id="openBtn"
-        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;">
+        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;width:100%;">
         Open Now
       </button>
     </div>
@@ -240,15 +243,18 @@ function showPopup(){
   document.body.appendChild(popup);
 
   document.getElementById("openBtn").onclick = () => {
+    accepted = true;
     openExternal();
   };
+
+  setTimeout(()=> popupActive = false, 1500);
 }
 
-
+// OPEN EXTERNAL BROWSER
 function openExternal(){
   const ua = navigator.userAgent.toLowerCase();
 
-  // Android Chrome Intent
+  // Android Chrome intent
   if(/android/.test(ua)){
     window.location.href =
       "intent://" +
@@ -262,16 +268,16 @@ function openExternal(){
     return;
   }
 
-  // iOS (Safari default fallback)
+  // iOS fallback
   if(/iphone|ipad|ipod/.test(ua)){
     window.location.href = smartLink;
     return;
   }
 
-  // Desktop / others
+  // Desktop
   window.location.href = smartLink;
 }
-
+  
 </body>
 </html>
 
