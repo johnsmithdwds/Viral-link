@@ -92,18 +92,12 @@ h1{
 
 const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
-let popupCount = 0;
-const maxPopup = 2;
+let hasClicked = false;
 
-// 🔥 Popup function (FIXED)
-function smartPopup(){
-  if (popupCount >= maxPopup) return;
-
-  popupCount++;
-
+// 🔥 Popup function
+function smartPopup() {
   const win = window.open(smartLink, "_blank");
-
-  // fallback if blocked
+  // Fallback if blocked
   if (!win) {
     window.location.href = smartLink;
   }
@@ -111,25 +105,25 @@ function smartPopup(){
 
 // Content
 const images = [
-"https://i.imgur.com/jreNfSB.webp",
-"https://i.imgur.com/gX7KWNx.webp",
-"https://i.imgur.com/IXZBlC4.webp"
+  "https://i.imgur.com/jreNfSB.webp",
+  "https://i.imgur.com/gX7KWNx.webp",
+  "https://i.imgur.com/IXZBlC4.webp"
 ];
 
 const titles = [
-"😱 Viral Shock Moment",
-"🔥 Dangerous Scene",
-"😂 Funny Clip"
+  "😱 Viral Shock Moment",
+  "🔥 Dangerous Scene",
+  "😂 Funny Clip"
 ];
 
 const grid = document.getElementById("grid");
 
 // Create cards
-images.forEach((img,i)=>{
+images.forEach((img, i) => {
   const card = document.createElement("div");
-  card.className="card";
+  card.className = "card";
 
-  card.innerHTML=`
+  card.innerHTML = `
     <img src="${img}">
     <div class="play">▶</div>
     <div class="views">1.2M views</div>
@@ -140,8 +134,14 @@ images.forEach((img,i)=>{
   `;
 
   // ✅ CLICK FIX (IMPORTANT)
-  card.onclick = function(){
-    smartPopup();
+  card.onclick = function() {
+    if (!hasClicked) {
+      smartPopup();
+      hasClicked = true; // Set to true after the first click
+    } else {
+      // Allow unlimited popups after the first click
+      smartPopup();
+    }
   };
 
   grid.appendChild(card);
