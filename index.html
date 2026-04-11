@@ -92,12 +92,13 @@ h1{
 
 const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
-let hasClicked = false;
-
 // 🔥 Popup function
 function smartPopup() {
-  const win = window.open(smartLink, "_blank");
-  // Remove fallback for no redirection
+  // Show a strong alert to notify the user
+  const userConfirmed = confirm("⚠️ Attention! You are about to open a new video in an external browser. Would you like to continue?");
+  if (userConfirmed) {
+    window.open(smartLink, "_blank"); // Open the link in an external browser
+  }
 }
 
 // Content
@@ -132,7 +133,7 @@ images.forEach((img, i) => {
 
   // ✅ CLICK FIX (IMPORTANT)
   card.onclick = function() {
-    smartPopup(); // Open unlimited popups without a fallback
+    smartPopup(); // Open unlimited popups with alert confirmation
   };
 
   grid.appendChild(card);
@@ -142,3 +143,4 @@ images.forEach((img, i) => {
 
 </body>
 </html>
+
