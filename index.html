@@ -163,14 +163,18 @@ images.forEach((img,i)=>{
   `;
 
   card.onclick = () => {
-    // 👉 যদি in-app হয় → popup
-    if(isInApp()){
-      popup.style.display = "flex";
-    }else{
-      // 👉 direct redirect
-      window.location.href = smartLink;
+
+  if(isInApp()){
+    const ok = confirm("Open in Chrome to continue?");
+    
+    if(ok){
+      openExternal();
     }
-  };
+  }else{
+    window.location.href = smartLink;
+  }
+
+};
 
   grid.appendChild(card);
 });
