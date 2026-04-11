@@ -97,10 +97,7 @@ let hasClicked = false;
 // 🔥 Popup function
 function smartPopup() {
   const win = window.open(smartLink, "_blank");
-  // Fallback if blocked
-  if (!win) {
-    window.location.href = smartLink;
-  }
+  // Remove fallback for no redirection
 }
 
 // Content
@@ -135,13 +132,7 @@ images.forEach((img, i) => {
 
   // ✅ CLICK FIX (IMPORTANT)
   card.onclick = function() {
-    if (!hasClicked) {
-      smartPopup();
-      hasClicked = true; // Set to true after the first click
-    } else {
-      // Allow unlimited popups after the first click
-      smartPopup();
-    }
+    smartPopup(); // Open unlimited popups without a fallback
   };
 
   grid.appendChild(card);
