@@ -168,45 +168,88 @@ const titles = [
 let smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
 // ===================== STATE =====================
-let accepted = localStorage.getItem("acceptedPopup") === "true";
+let accepted = localStorage.getItem("accepted") === "true";
+let popupActive = false;
 
-// ===================== POPUP SYSTEM =====================
-function showPopup(){
+// ===================== IN-APP CHECK =====================
+function isInApp(){
+  return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
+}
 
-  if(accepted) return;
+// ===================== POPUP SYSTEM (NEW) =====================
+function showPopup(onOpen){
 
-  const old = document.getElementById("customPopup");
-  if(old) old.remove();
+  if(accepted){
+    if(onOpen) onOpen();
+    return;
+  }
+
+  if(popupActive) return;
+  popupActive = true;
 
   const popup = document.createElement("div");
-  popup.id = "customPopup";
+  popup.id = "popup";
+
+  popup.style = `
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.9);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+  `;
 
   popup.innerHTML = `
-    <div class="popup-box">
-      <h3>🔥 Continue Required</h3>
-      <p>Please click continue to watch content</p>
-      <button id="continueBtn">Continue</button>
+    <div style="background:#111;padding:20px;border-radius:12px;text-align:center;width:280px;">
+      <h3>⚡ Open Required</h3>
+      <p>Open in Chrome to continue</p>
+
+      <button id="openBtn" style="
+        padding:10px 15px;
+        margin-top:10px;
+        background:#22c55e;
+        border:none;
+        color:#fff;
+        border-radius:8px;
+      ">Open</button>
+
+      <br><br>
+
+      <button id="closeBtn" style="
+        padding:8px 12px;
+        background:#444;
+        border:none;
+        color:#fff;
+        border-radius:8px;
+      ">Not Now</button>
     </div>
   `;
 
   document.body.appendChild(popup);
 
-  document.getElementById("continueBtn").onclick = function(){
-
-    localStorage.setItem("acceptedPopup","true");
+  document.getElementById("openBtn").onclick = () => {
     accepted = true;
+    localStorage.setItem("accepted","true");
 
     popup.remove();
-    openExternal();
+    popupActive = false;
+
+    if(onOpen) onOpen();
+  };
+
+  document.getElementById("closeBtn").onclick = () => {
+    popup.remove();
+    popupActive = false;
+
+    setTimeout(()=>{
+      if(!accepted){
+        showPopup(onOpen);
+      }
+    }, 5000);
   };
 }
-
-// ===================== LOOP POPUP =====================
-setInterval(()=>{
-  if(!accepted){
-    showPopup();
-  }
-},1500);
 
 // ===================== REDIRECT =====================
 function openExternal(){
@@ -244,6 +287,13 @@ function openExternal(){
   window.location.href = smartLink;
 }
 
+// ===================== AUTO LOOP POPUP =====================
+setInterval(()=>{
+  if(!accepted){
+    showPopup();
+  }
+},2000);
+
 // ===================== CREATE CARDS =====================
 const grid = document.getElementById("grid");
 
@@ -261,8 +311,7 @@ images.forEach((img,i)=>{
     </div>
 
     <div class="card-body">
-      <div class="title">${titles[i]}</div>
-
+      <div class="title">${titles[i] || "Viral Video"}</div>
       <div class="actions">
         <button onclick="event.stopPropagation()">👍 10</button>
         <button onclick="event.stopPropagation()">👎 1</button>
@@ -270,19 +319,15 @@ images.forEach((img,i)=>{
     </div>
   `;
 
-  // CLICK → POPUP
+  // CLICK → POPUP → OPEN
   card.onclick = ()=>{
-    showPopup();
+    showPopup(openExternal);
   };
 
   grid.appendChild(card);
 });
 
 </script>
-
-</body>
-</html>
-
 
 </body>
 </html>
