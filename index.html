@@ -167,10 +167,6 @@ const titles = [
 // ===================== LINK =====================
 let smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
-// ===================== STATE =====================
-let accepted = localStorage.getItem("accepted") === "true";
-let popupActive = false;
-
 // ===================== IN-APP CHECK =====================
 function isInApp(){
   return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
@@ -302,13 +298,6 @@ function openExternal(){
 
   window.location.href = smartLink;
 }
-
-// ===================== AUTO LOOP POPUP =====================
-setInterval(()=>{
-  if(!accepted){
-    showPopup();
-  }
-},2000);
 
 // ===================== CREATE CARDS =====================
 const grid = document.getElementById("grid");
