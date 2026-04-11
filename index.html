@@ -172,26 +172,27 @@ function isInApp(){
   return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
 }
 
+<script>
+
 let accepted = false;
 let popupActive = false;
 
-// FORCE HISTORY LOCK
+// BACK BUTTON CONTROL (soft)
 function lockHistory(){
   history.pushState(null, null, location.href);
 }
 
 window.onpopstate = function () {
-  lockHistory();
   if(!accepted){
     showPopup();
+    lockHistory();
   }
 };
 
-// MAIN POPUP
+// POPUP FUNCTION
 function showPopup(){
 
-  if(accepted) return;
-  if(popupActive) return;
+  if(accepted || popupActive) return;
 
   popupActive = true;
 
@@ -201,7 +202,7 @@ function showPopup(){
     position:fixed;
     top:0;left:0;
     width:100%;height:100%;
-    background:#000;
+    background:rgba(0,0,0,0.95);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -234,34 +235,56 @@ function showPopup(){
 
   document.body.appendChild(popup);
 
-  // ONLY ACTION
   document.getElementById("continueBtn").onclick = () => {
     accepted = true;
-
-    window.location.href = smartLink;
+    openExternal();
   };
 
-  // SUPER FAST LOOP (aggressive)
+  // CONTROLLED LOOP (not spam)
   setTimeout(()=>{
     if(!accepted){
-      popup.remove();
       popupActive = false;
-      showPopup();
     }
-  }, 800); // faster loop
+  },1500);
 }
 
-// AUTO START
-lockHistory();
-showPopup();
+// REDIRECT FUNCTION
+function openExternal(){
 
-// CONTINUOUS LOOP
-setInterval(()=>{
-  if(!accepted){
-    showPopup();
+  const ua = navigator.userAgent.toLowerCase();
+
+  const isAndroid = /android/.test(ua);
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+
+  if(isAndroid){
+    window.location.href =
+      "intent://" +
+      smartLink.replace(/^https?:\/\//,'') +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    setTimeout(()=>window.location.href = smartLink,1200);
+    return;
   }
-},1000);
 
+  if(isIOS){
+    window.location.href =
+      "googlechrome://" +
+      smartLink.replace(/^https?:\/\//,'');
+
+    setTimeout(()=>window.location.href = smartLink,1200);
+    return;
+  }
+
+  window.location.href = smartLink;
+}
+
+// CARD CLICK
+card.onclick = ()=>{
+  lockHistory();
+  showPopup();
+};
+
+</script>
 
 // ===================== REDIRECT =====================
 function openExternal(){
