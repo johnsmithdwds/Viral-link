@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Premium Video Hub</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#020617,#0f172a);
+  color:#fff;
+}
+
+/* HEADER */
+h1{
+  text-align:center;
+  padding:18px;
+  font-size:22px;
+  font-weight:700;
+}
+
+/* GRID BIG */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+  padding:16px;
+}
+
+/* CARD */
+.card{
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(12px);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 12px 35px rgba(0,0,0,0.8);
+  cursor:pointer;
+  transition:.3s;
+  position:relative;
+}
+.card:hover{
+  transform:translateY(-8px) scale(1.02);
+}
+
+/* IMAGE */
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+/* PLAY */
+.play{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:32px;
+  background:rgba(0,0,0,0.6);
+  padding:12px 16px;
+  border-radius:50%;
+}
+
+/* VIEWS */
+.views{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:rgba(0,0,0,0.7);
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+/* BADGE */
+.badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#22c55e;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:20px;
+  font-weight:600;
+}
+
+/* BODY */
+.card-body{
+  padding:12px;
+}
+
+/* TITLE */
+.title{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:10px;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  justify-content:space-between;
+  font-size:14px;
+}
+
+button{
+  background:none;
+  border:none;
+  color:#94a3b8;
+  cursor:pointer;
+  font-size:14px;
+}
+button:hover{
+  color:#fff;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🔥 Trending Premium Videos</h1>
+
+<div class="grid" id="grid"></div>
+
+<script>
+
+// ALL YOUR IMAGES
+const images = [
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_afc044e6-455a-42e1-a538-d93f0be54d2b.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_d9b27cd4-f9d8-441e-881a-c8c64d2419bf.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8d0c6dae-b734-4cf2-bf90-5a55ecc4ff08.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_7dda8677-4695-4ac2-bdf8-00498564e6dd.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_75d91c57-e8eb-4891-a453-9ef7d8c6a4c8.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_594f4911-65ad-41ff-8a8d-bea22c289998.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_14896075-d0b9-4806-b767-01563b6ba89c.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_f58be999-bbf1-4b53-b137-158aee5e6c09.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_58686323-481f-40a1-97a3-4ee43439884b.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_4db6e09b-a38d-4415-8991-6a9e30dc14ba.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_9ba01c3b-fb34-48f0-8e2f-901003937f1c.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_04df5689-ba63-4532-8f39-3d5b6ba93006.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_55c07db0-e14c-46dc-84c7-5468a1bfd58a.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-9b8b-0c98705613a7.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
+];
+
+// TITLES
+const titles = [
+"😱 Viral Shock Moment",
+"🔥 Dangerous Scene Caught",
+"😂 Funny Viral Clip",
+"🚨 Breaking Live Incident",
+"🐍 Snake Attack Real Footage",
+"💥 Epic Action Scene",
+"❤️ Emotional Viral Story",
+"🎯 Perfect Timing Moment",
+"⚡ Unexpected Event",
+"🔥 Trending Now Video",
+"😳 You Won’t Believe This",
+"🎥 Must Watch Clip",
+"💣 Extreme Viral Moment",
+"👀 Caught on Camera",
+"🏆 Top Viral Video"
+];
+
+function formatViews(num){
+  if(num>=1000000) return (num/1000000).toFixed(1)+"M";
+  if(num>=1000) return (num/1000).toFixed(1)+"K";
+  return num;
+}
+
+const grid = document.getElementById("grid");
+
+images.forEach((img,i)=>{
+
+  let views = formatViews(Math.floor(Math.random()*900000)+1000);
+
+  // 👍 more likes, 👎 less dislikes
+  let likes = Math.floor(Math.random()*9000)+5000;
+  let dislikes = Math.floor(Math.random()*60)+1;
+
+  let card = document.createElement("div");
+  card.className="card";
+
+  card.innerHTML = `
+    <div style="position:relative">
+      <img src="${img}">
+      <div class="play">▶</div>
+      <div class="views">👁 ${views}</div>
+      <div class="badge">LIVE</div>
+    </div>
+
+    <div class="card-body">
+      <div class="title">${titles[i]}</div>
+
+      <div class="actions">
+        <button onclick="like(event,this)">👍 <span>1{likes}</span></button>
+        <button onclick="dislike(event,this)">👎 <span>${dislikes}</span></button>
+      </div>
+    </div>
+  `;
+
+  card.onclick = ()=>{
+    window.open("https://your-monetized-link.com","_blank");
+  };
+
+  grid.appendChild(card);
+});
+
+// LIKE
+function like(e,btn){
+  e.stopPropagation();
+  let span = btn.querySelector("span");
+  span.innerText = parseInt(span.innerText)+1;
+}
+
+// DISLIKE
+function dislike(e,btn){
+  e.stopPropagation();
+  let span = btn.querySelector("span");
+  span.innerText = parseInt(span.innerText)+1;
+}
+
+</script>
+
+</body>
+</html>
