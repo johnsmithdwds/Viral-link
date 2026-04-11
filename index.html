@@ -164,20 +164,13 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-// ===================== LINK =====================
-let smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
-
-// ===================== IN-APP CHECK =====================
-function isInApp(){
-  return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
-}
-
 <script>
-
 let accepted = false;
 let popupActive = false;
 
-// BACK BUTTON CONTROL (soft)
+const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+
+// BACK CONTROL
 function lockHistory(){
   history.pushState(null, null, location.href);
 }
@@ -189,19 +182,16 @@ window.onpopstate = function () {
   }
 };
 
-// POPUP FUNCTION
+// POPUP
 function showPopup(){
 
   if(accepted || popupActive) return;
-
   popupActive = true;
 
   const popup = document.createElement("div");
-
   popup.style = `
     position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
+    inset:0;
     background:rgba(0,0,0,0.95);
     display:flex;
     align-items:center;
@@ -210,24 +200,10 @@ function showPopup(){
   `;
 
   popup.innerHTML = `
-    <div style="
-      background:#111;
-      padding:25px;
-      border-radius:12px;
-      text-align:center;
-      width:260px;
-    ">
-      <p style="margin-bottom:20px;">
-        Continue to watch video
-      </p>
-
-      <button id="continueBtn" style="
-        background:#22c55e;
-        border:none;
-        padding:12px 20px;
-        border-radius:8px;
-        font-weight:bold;
-      ">
+    <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:260px;">
+      <p style="margin-bottom:20px;">Continue to watch video</p>
+      <button id="continueBtn"
+        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;">
         Continue
       </button>
     </div>
@@ -240,19 +216,15 @@ function showPopup(){
     openExternal();
   };
 
-  // CONTROLLED LOOP (not spam)
   setTimeout(()=>{
-    if(!accepted){
-      popupActive = false;
-    }
+    popupActive = false;
   },1500);
 }
 
-// REDIRECT FUNCTION
+// REDIRECT
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
-
   const isAndroid = /android/.test(ua);
   const isIOS = /iphone|ipad|ipod/.test(ua);
 
@@ -278,12 +250,11 @@ function openExternal(){
   window.location.href = smartLink;
 }
 
-// CARD CLICK
-card.onclick = ()=>{
+// ✅ FIX: EVENT DELEGATION (card problem solved)
+document.getElementById("grid").addEventListener("click", function(){
   lockHistory();
   showPopup();
-};
-
+});
 </script>
 
 </body>
