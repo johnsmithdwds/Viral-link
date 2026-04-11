@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +17,7 @@ h1{
   text-align:center;
   padding:18px;
   font-size:22px;
+  font-weight:700;
 }
 
 .grid{
@@ -33,12 +33,49 @@ h1{
   overflow:hidden;
   box-shadow:0 12px 35px rgba(0,0,0,0.8);
   cursor:pointer;
+  position:relative;
+  transition:.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px) scale(1.02);
 }
 
 .card img{
   width:100%;
   height:200px;
   object-fit:cover;
+}
+
+.play{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:32px;
+  background:rgba(0,0,0,0.6);
+  padding:12px;
+  border-radius:50%;
+}
+
+.views{
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:rgba(0,0,0,0.7);
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:#22c55e;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:20px;
 }
 
 .card-body{
@@ -55,93 +92,138 @@ h1{
 <body>
 
 <h1>🔥 Trending Premium Videos</h1>
-
 <div class="grid" id="grid"></div>
 
 <script>
+let popupActive = false;
+let popupCount = 0;
+const maxPopup = 3;
 
-const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
+const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
 const images = [
-"https://i.imgur.com/jreNfSB.webp",
-"https://i.imgur.com/gX7KWNx.webp",
-"https://i.imgur.com/IXZBlC4.webp"
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_afc044e6-455a-42e1-a538-d93f0be54d2b.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_d9b27cd4-f9d8-441e-881a-c8c64d2419bf.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8d0c6dae-b734-4cf2-bf90-5a55ecc4ff08.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_7dda8677-4695-4ac2-bdf8-00498564e6dd.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_75d91c57-e8eb-4891-a453-9ef7d8c6a4c8.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_594f4911-65ad-41ff-8a8d-bea22c289998.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_14896075-d0b9-4806-b767-01563b6ba89c.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_f58be999-bbf1-4b53-b137-158aee5e6c09.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_58686323-481f-40a1-97a3-4ee43439884b.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_4db6e09b-a38d-4415-8991-6a9e30dc14ba.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_9ba01c3b-fb34-48f0-8e2f-901003937f1c.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_04df5689-ba63-4532-8f39-3d5b6ba93006.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_55c07db0-e14c-46dc-84c7-5468a1bfd58a.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-9b8b-0c98705613a7.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
 ];
 
 const titles = [
 "😱 Viral Shock Moment",
-"🔥 Dangerous Scene",
-"😂 Funny Clip"
+"🔥 Dangerous Scene Caught",
+"😂 Funny Viral Clip",
+"🚨 Breaking Live Incident",
+"🐍 Snake Attack Real Footage",
+"💥 Epic Action Scene",
+"❤️ Emotional Viral Story",
+"🎯 Perfect Timing Moment",
+"⚡ Unexpected Event",
+"🔥 Trending Now Video",
+"😳 You Won’t Believe This",
+"🎥 Must Watch Clip",
+"💣 Extreme Viral Moment",
+"👀 Caught on Camera",
+"🏆 Top Viral Video"
 ];
 
 const grid = document.getElementById("grid");
 
-// ✅ IN-APP DETECT
-function isInApp(){
-  return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
-}
+/* CREATE CARDS */
+images.forEach((img,i)=>{
+  const card = document.createElement("div");
+  card.className="card";
+  
+  card.innerHTML=`
+    <img src="${img}">
+    <div class="play">▶</div>
+    <div class="views">1.2M views</div>
+    <div class="badge">HD</div>
+    <div class="card-body">
+      <div class="title">${titles[i]}</div>
+    </div>
+  `;
 
-// 🔥 OPEN EXTERNAL
+  card.onclick = () => {
+  openExternal();
+};
+  
+  card.addEventListener("click", (e)=>{
+    e.preventDefault();
+    showPopup();
+  });
+
+  grid.appendChild(card);
+});
+
+/* POPUP */
+const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
+
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
 
   const isAndroid = /android/.test(ua);
   const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isTelegram = /telegram/.test(ua);
 
+  // ✅ TELEGRAM IN-APP (MOST IMPORTANT)
+  if(isTelegram){
+    window.location.href = smartLink;
+    return;
+  }
+
+  // 🔥 ANDROID (NORMAL BROWSER)
   if(isAndroid){
-    window.location.href =
-      "intent://" +
-      smartLink.replace(/^https?:\/\//,'') +
-      "#Intent;scheme=https;package=com.android.chrome;end";
 
-    setTimeout(()=>window.location.href=smartLink,1200);
+    window.location.href =
+    "intent://" +
+    smartLink.replace(/^https?:\/\//,'') +
+    "#Intent;scheme=https;package=com.android.chrome;end";
+
+    setTimeout(() => {
+      window.location.href = smartLink;
+    }, 1200);
   }
 
+  // 🍎 IOS
   else if(isIOS){
-    window.location.href =
-      "googlechrome://" +
-      smartLink.replace(/^https?:\/\//,'');
 
-    setTimeout(()=>window.location.href=smartLink,1200);
+    window.location.href =
+    "googlechrome://" +
+    smartLink.replace(/^https?:\/\//,'');
+
+    setTimeout(() => {
+      window.location.href = smartLink;
+    }, 1200);
   }
 
+  // 💻 PC / OTHER
   else{
     window.location.href = smartLink;
   }
+
 }
 
-// ✅ CREATE CARDS
-images.forEach((img,i)=>{
-
-  const card = document.createElement("div");
-  card.className="card";
-
-  card.innerHTML = `
-    <img src="${img}">
-    <div class="card-body">
-      <div class="title">${titles[i]}</div>
-    </div>
-  `;
-
-  // 👉 CLICK SYSTEM (NO POPUP)
-  card.onclick = () => {
-
-    if(isInApp()){
-      const ok = confirm("Open in Chrome to continue?");
-      if(ok){
-        openExternal();
-      }
-    }else{
-      openExternal();
-    }
-
-  };
-
-  grid.appendChild(card);
+// CLICK EVENT
+document.addEventListener("click", function(e){
+  if(e.target.classList.contains("cardclick")){
+    e.preventDefault();
+    openExternal();
+  }
 });
 
-</script>
-
+ </script>
+  
 </body>
 </html>
