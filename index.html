@@ -155,16 +155,9 @@ images.forEach((img,i)=>{
     </div>
   `;
   
-card.onclick = ()=>{
-  const a = document.createElement("a");
-  a.href = smartLink;
-  a.target = "_blank";
-  a.rel = "noopener noreferrer";
-
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-};
+link.appendChild(card);
+grid.appendChild(link);
+});
   
 grid.appendChild(card);
 });
