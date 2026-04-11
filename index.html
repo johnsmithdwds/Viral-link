@@ -163,20 +163,9 @@ images.forEach((img,i)=>{
   `;
 
   card.onclick = () => {
-
-  if(isInApp()){
-    const ok = confirm("Open in Chrome to continue?");
-    
-    if(ok){
-      openExternal();
-    }
-  }else{
-    window.location.href = smartLink;
-  }
-
-};
-
-  grid.appendChild(card);
+openExternal();
+  
+ grid.appendChild(card);
 });
 
 // ❌ CLOSE POPUP
