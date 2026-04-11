@@ -17,7 +17,6 @@ h1{
   text-align:center;
   padding:18px;
   font-size:22px;
-  font-weight:700;
 }
 
 .grid{
@@ -33,11 +32,7 @@ h1{
   overflow:hidden;
   box-shadow:0 12px 35px rgba(0,0,0,0.8);
   position:relative;
-  transition:.3s;
-}
-
-.card:hover{
-  transform:translateY(-6px) scale(1.02);
+  cursor:pointer;
 }
 
 .card img{
@@ -95,25 +90,26 @@ h1{
 
 <script>
 
-// 🔗 YOUR LINK
 const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
-// 📱 Detect In-App
-function isInApp(){
-  return /FBAN|FBAV|Instagram|Messenger|Telegram/i.test(navigator.userAgent);
-}
-
-// 🔢 Control
 let popupCount = 0;
 const maxPopup = 2;
 
-// 🔥 Popup Function
+// 🔥 Popup function (FIXED)
 function smartPopup(){
+  if (popupCount >= maxPopup) return;
+
   popupCount++;
-  window.open(smartLink, "_blank");
+
+  const win = window.open(smartLink, "_blank");
+
+  // fallback if blocked
+  if (!win) {
+    window.location.href = smartLink;
+  }
 }
 
-// 🖼️ Content
+// Content
 const images = [
 "https://i.imgur.com/jreNfSB.webp",
 "https://i.imgur.com/gX7KWNx.webp",
@@ -128,11 +124,11 @@ const titles = [
 
 const grid = document.getElementById("grid");
 
-// 🧱 Create Cards (NO CLICK)
+// Create cards
 images.forEach((img,i)=>{
   const card = document.createElement("div");
   card.className="card";
-  
+
   card.innerHTML=`
     <img src="${img}">
     <div class="play">▶</div>
@@ -143,18 +139,13 @@ images.forEach((img,i)=>{
     </div>
   `;
 
-  // ❌ CLICK OFF (no redirect)
-  // card.onclick removed
+  // ✅ CLICK FIX (IMPORTANT)
+  card.onclick = function(){
+    smartPopup();
+  };
 
   grid.appendChild(card);
 });
-
-// ⏱️ AUTO POPUP (every 5 sec, limited)
-setInterval(()=>{
-  if(isInApp() && popupCount < maxPopup){
-    smartPopup();
-  }
-}, 5000);
 
 </script>
 
