@@ -142,9 +142,16 @@ const grid = document.getElementById("grid");
 
 /* CREATE CARDS */
 images.forEach((img,i)=>{
+  // ✅ link create করো
+  const link = document.createElement("a");
+  link.href = smartLink;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.style.textDecoration = "none";
+
   const card = document.createElement("div");
   card.className="card";
-
+  
   card.innerHTML=`
     <img src="${img}">
     <div class="play">▶</div>
