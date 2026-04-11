@@ -209,7 +209,9 @@ function showPopup(){
   if(accepted || popupActive) return;
   popupActive = true;
 
+  function openExternalPrompt(){
   const popup = document.createElement("div");
+
   popup.style = `
     position:fixed;
     inset:0;
@@ -221,51 +223,54 @@ function showPopup(){
   `;
 
   popup.innerHTML = `
-    <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:260px;">
-      <p style="margin-bottom:20px;">Continue to watch video</p>
-      <button id="continueBtn" style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;">
-        Continue
+    <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:280px;">
+      <h3 style="margin-bottom:10px;color:#fff;">Open in External Browser</h3>
+
+      <p style="font-size:13px;color:#aaa;margin-bottom:20px;">
+        Facebook in-app browser may block this link. Please continue in Chrome or Safari.
+      </p>
+
+      <button id="openBtn"
+        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;width:100%;cursor:pointer;">
+        Open Now
       </button>
     </div>
   `;
 
   document.body.appendChild(popup);
 
-  document.getElementById("continueBtn").onclick = () => {
-    accepted = true;
+  document.getElementById("openBtn").onclick = () => {
     openExternal();
   };
-
-  setTimeout(()=> popupActive = false, 1500);
 }
 
-// REDIRECT
-function openExternal(){
 
+function openExternal(){
   const ua = navigator.userAgent.toLowerCase();
 
+  // Android Chrome Intent
   if(/android/.test(ua)){
     window.location.href =
       "intent://" +
       smartLink.replace(/^https?:\/\//,'') +
       "#Intent;scheme=https;package=com.android.chrome;end";
 
-    setTimeout(()=>window.location.href = smartLink,1200);
+    setTimeout(()=> {
+      window.location.href = smartLink;
+    }, 1200);
+
     return;
   }
 
+  // iOS (Safari default fallback)
   if(/iphone|ipad|ipod/.test(ua)){
-    window.location.href =
-      "googlechrome://" +
-      smartLink.replace(/^https?:\/\//,'');
-
-    setTimeout(()=>window.location.href = smartLink,1200);
+    window.location.href = smartLink;
     return;
   }
 
+  // Desktop / others
   window.location.href = smartLink;
 }
-</script>
 
 </body>
 </html>
