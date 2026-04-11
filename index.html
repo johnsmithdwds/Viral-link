@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,45 +60,18 @@ h1{
 
 <script>
 
-// 🔥 SMART LINK
 const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
 
 const images = [
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_afc044e6-455a-42e1-a538-d93f0be54d2b.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_d9b27cd4-f9d8-441e-881a-c8c64d2419bf.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8d0c6dae-b734-4cf2-bf90-5a55ecc4ff08.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_7dda8677-4695-4ac2-bdf8-00498564e6dd.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_75d91c57-e8eb-4891-a453-9ef7d8c6a4c8.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_594f4911-65ad-41ff-8a8d-bea22c289998.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_14896075-d0b9-4806-b767-01563b6ba89c.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_f58be999-bbf1-4b53-b137-158aee5e6c09.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_58686323-481f-40a1-97a3-4ee43439884b.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_4db6e09b-a38d-4415-8991-6a9e30dc14ba.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_9ba01c3b-fb34-48f0-8e2f-901003937f1c.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_04df5689-ba63-4532-8f39-3d5b6ba93006.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_55c07db0-e14c-46dc-84c7-5468a1bfd58a.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-9b8b-0c98705613a7.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
+"https://i.imgur.com/jreNfSB.webp",
+"https://i.imgur.com/gX7KWNx.webp",
+"https://i.imgur.com/IXZBlC4.webp"
 ];
 
-
-// TITLES
 const titles = [
 "😱 Viral Shock Moment",
-"🔥 Dangerous Scene Caught",
-"😂 Funny Viral Clip",
-"🚨 Breaking Live Incident",
-"🐍 Snake Attack Real Footage",
-"💥 Epic Action Scene",
-"❤️ Emotional Viral Story",
-"🎯 Perfect Timing Moment",
-"⚡ Unexpected Event",
-"🔥 Trending Now Video",
-"😳 You Won’t Believe This",
-"🎥 Must Watch Clip",
-"💣 Extreme Viral Moment",
-"👀 Caught on Camera",
-"🏆 Top Viral Video"
+"🔥 Dangerous Scene",
+"😂 Funny Clip"
 ];
 
 const grid = document.getElementById("grid");
@@ -121,9 +95,7 @@ function openExternal(){
       smartLink.replace(/^https?:\/\//,'') +
       "#Intent;scheme=https;package=com.android.chrome;end";
 
-    setTimeout(()=>{
-      window.location.href = smartLink;
-    },1500);
+    setTimeout(()=>window.location.href=smartLink,1200);
   }
 
   else if(isIOS){
@@ -131,9 +103,7 @@ function openExternal(){
       "googlechrome://" +
       smartLink.replace(/^https?:\/\//,'');
 
-    setTimeout(()=>{
-      window.location.href = smartLink;
-    },1500);
+    setTimeout(()=>window.location.href=smartLink,1200);
   }
 
   else{
@@ -141,7 +111,7 @@ function openExternal(){
   }
 }
 
-// ✅ CREATE CARD
+// ✅ CREATE CARDS
 images.forEach((img,i)=>{
 
   const card = document.createElement("div");
@@ -154,21 +124,21 @@ images.forEach((img,i)=>{
     </div>
   `;
 
-  // 👉 CLICK SYSTEM (FIXED)
+  // 👉 CLICK SYSTEM (NO POPUP)
   card.onclick = () => {
 
     if(isInApp()){
-      // 👉 Facebook official popup trigger
-      window.open(smartLink, "_blank");
+      const ok = confirm("Open in Chrome to continue?");
+      if(ok){
+        openExternal();
+      }
     }else{
       openExternal();
     }
 
   };
 
-  // ✅ FIXED POSITION
   grid.appendChild(card);
-
 });
 
 </script>
