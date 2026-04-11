@@ -138,16 +138,17 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
+<script>
+let popupActive = false;
+let popupCount = 0;
+const maxPopup = 3;
+
+const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+
 const grid = document.getElementById("grid");
 
 /* CREATE CARDS */
 images.forEach((img,i)=>{
-  // ✅ link create করো
-  const link = document.createElement("a");
-  link.href = smartLink;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.style.textDecoration = "none";
 
   const card = document.createElement("div");
   card.className="card";
@@ -161,11 +162,17 @@ images.forEach((img,i)=>{
       <div class="title">${titles[i]}</div>
     </div>
   `;
-  
-link.appendChild(card);
-grid.appendChild(link);
+
+  // ✅ CLICK করলে popup show হবে
+  card.addEventListener("click", (e)=>{
+    e.preventDefault();
+    showPopup();
+  });
+
+  grid.appendChild(card);
 });
-  
+
+
 /* POPUP */
 function showPopup(){
 
@@ -202,17 +209,20 @@ function showPopup(){
 
   document.body.appendChild(popup);
 
+  // ✅ Button click → redirect
   document.getElementById("openBtn").onclick = ()=>{
     openExternal();
     popup.remove();
     popupActive = false;
   };
 
+  // ❌ auto close (optional)
   setTimeout(()=>{
     popup.remove();
     popupActive = false;
   },4000);
 }
+
 
 /* UNIVERSAL OPEN */
 function openExternal(){
