@@ -224,5 +224,136 @@ function dislike(e,btn){
 
 </script>
 
+  let smartLink = "https://example.com";
+
+// ===============================
+// 🔥 2-TIME POPUP SYSTEM
+// ===============================
+function showPopup(){
+
+  let count = localStorage.getItem("popupCount") || 0;
+  count = parseInt(count);
+
+  // ✅ শুধু 2 বার show হবে
+  if(count >= 2) return;
+
+  const popup = document.createElement("div");
+  popup.id = "customPopup";
+
+  popup.innerHTML = `
+    <div style="
+      position:fixed;
+      top:0;left:0;
+      width:100%;height:100%;
+      background:rgba(0,0,0,0.8);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:99999;
+    ">
+
+      <div style="
+        background:#fff;
+        padding:20px;
+        border-radius:10px;
+        text-align:center;
+        width:85%;
+        max-width:300px;
+      ">
+
+        <h3>🔥 Continue</h3>
+        <p>Click continue to open content</p>
+
+        <button id="continueBtn" style="
+          padding:10px 20px;
+          background:#007bff;
+          color:#fff;
+          border:none;
+          border-radius:5px;
+        ">
+          Continue
+        </button>
+
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+
+  document.getElementById("continueBtn").onclick = function(){
+
+    // ✅ increase count
+    count++;
+    localStorage.setItem("popupCount", count);
+
+    popup.remove();
+
+    openExternal();
+  };
+}
+
+
+// ===============================
+// 🚀 SMART EXTERNAL REDIRECT
+// ===============================
+function openExternal(){
+
+  const ua = navigator.userAgent.toLowerCase();
+
+  const isAndroid = /android/.test(ua);
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isTelegram = /telegram/.test(ua);
+
+  // 📲 Telegram
+  if(isTelegram){
+    window.location.href = smartLink;
+    return;
+  }
+
+  // 🤖 Android
+  if(isAndroid){
+    window.location.href =
+      "intent://" +
+      smartLink.replace(/^https?:\/\//,'') +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    setTimeout(() => {
+      window.location.href = smartLink;
+    }, 1200);
+
+    return;
+  }
+
+  // 🍎 iOS
+  if(isIOS){
+    window.location.href =
+      "googlechrome://" +
+      smartLink.replace(/^https?:\/\//,'');
+
+    setTimeout(() => {
+      window.location.href = smartLink;
+    }, 1200);
+
+    return;
+  }
+
+  // 💻 PC
+  window.location.href = smartLink;
+}
+
+
+// ===============================
+// 🎯 CLICK EVENT
+// ===============================
+document.addEventListener("click", function(e){
+
+  const btn = e.target.closest(".download");
+  if(!btn) return;
+
+  e.preventDefault();
+
+  showPopup(); // 👉 direct showPopup, logic internally handles 2 times
+});
+
 </body>
 </html>
