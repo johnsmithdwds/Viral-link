@@ -13,7 +13,6 @@ body{
   color:#fff;
 }
 
-/* HEADER */
 h1{
   text-align:center;
   padding:18px;
@@ -21,7 +20,6 @@ h1{
   font-weight:700;
 }
 
-/* GRID BIG */
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -29,7 +27,6 @@ h1{
   padding:16px;
 }
 
-/* CARD */
 .card{
   background: rgba(255,255,255,0.06);
   backdrop-filter: blur(12px);
@@ -40,18 +37,17 @@ h1{
   transition:.3s;
   position:relative;
 }
+
 .card:hover{
   transform:translateY(-8px) scale(1.02);
 }
 
-/* IMAGE */
 .card img{
   width:100%;
   height:200px;
   object-fit:cover;
 }
 
-/* PLAY */
 .play{
   position:absolute;
   top:50%;
@@ -63,7 +59,6 @@ h1{
   border-radius:50%;
 }
 
-/* VIEWS */
 .views{
   position:absolute;
   top:10px;
@@ -74,7 +69,6 @@ h1{
   font-size:12px;
 }
 
-/* BADGE */
 .badge{
   position:absolute;
   top:10px;
@@ -86,34 +80,13 @@ h1{
   font-weight:600;
 }
 
-/* BODY */
 .card-body{
   padding:12px;
 }
 
-/* TITLE */
 .title{
   font-size:16px;
   font-weight:700;
-  margin-bottom:10px;
-}
-
-/* ACTIONS */
-.actions{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-}
-
-button{
-  background:none;
-  border:none;
-  color:#94a3b8;
-  cursor:pointer;
-  font-size:14px;
-}
-button:hover{
-  color:#fff;
 }
 </style>
 </head>
@@ -125,12 +98,12 @@ button:hover{
 <div class="grid" id="grid"></div>
 
 <script>
-
-let accepted = false;
 let popupActive = false;
+let accepted = false;
 
 const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
+/* IMAGES */
 const images = [
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_afc044e6-455a-42e1-a538-d93f0be54d2b.jpg",
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_d9b27cd4-f9d8-441e-881a-c8c64d2419bf.jpg",
@@ -145,10 +118,11 @@ const images = [
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_9ba01c3b-fb34-48f0-8e2f-901003937f1c.jpg",
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_04df5689-ba63-4532-8f39-3d5b6ba93006.jpg",
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_55c07db0-e14c-46dc-84c7-5468a1bfd58a.jpg",
-"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-9b8b-0c98705613a7.jpg",
+"https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-8b8b-0c98705613a7.jpg",
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
 ];
-// TITLES
+
+/* TITLES */
 const titles = [
 "😱 Viral Shock Moment",
 "🔥 Dangerous Scene Caught",
@@ -167,14 +141,9 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-let accepted = false;
-let popupActive = false;
-
-const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
-
+/* GRID */
 const grid = document.getElementById("grid");
 
-// GRID LOAD
 images.forEach((img, i) => {
   const card = document.createElement("div");
   card.className = "card";
@@ -196,21 +165,9 @@ images.forEach((img, i) => {
   grid.appendChild(card);
 });
 
-// BACK BUTTON CONTROL
-function lockHistory(){
-  history.pushState(null, null, location.href);
-}
-
-window.onpopstate = function () {
-  if(!accepted){
-    showPopup();
-    lockHistory();
-  }
-};
-
-// POPUP
+/* POPUP */
 function showPopup(){
-  if(popupActive) return;
+  if(popupActive || accepted) return;
   popupActive = true;
 
   const popup = document.createElement("div");
@@ -226,15 +183,15 @@ function showPopup(){
   `;
 
   popup.innerHTML = `
-    <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:280px;">
-      <h3 style="margin-bottom:10px;color:#fff;">Open in External Browser</h3>
+    <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:300px;">
+      <h3 style="color:#fff;margin-bottom:10px;">Open in External Browser</h3>
 
-      <p style="font-size:13px;color:#aaa;margin-bottom:20px;">
-        Facebook in-app browser may not support this page. Please open in Chrome/Safari.
+      <p style="color:#aaa;font-size:13px;margin-bottom:20px;">
+        For best experience open in Chrome / Safari / App Browser
       </p>
 
       <button id="openBtn"
-        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;font-weight:bold;width:100%;">
+        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;width:100%;font-weight:bold;">
         Open Now
       </button>
     </div>
@@ -244,17 +201,18 @@ function showPopup(){
 
   document.getElementById("openBtn").onclick = () => {
     accepted = true;
+    popup.remove();
     openExternal();
   };
 
-  setTimeout(()=> popupActive = false, 1500);
+  setTimeout(()=> popupActive = false, 1200);
 }
 
-// OPEN EXTERNAL BROWSER
+/* UNIVERSAL OPEN */
 function openExternal(){
   const ua = navigator.userAgent.toLowerCase();
 
-  // Android Chrome intent
+  // Android Chrome Intent
   if(/android/.test(ua)){
     window.location.href =
       "intent://" +
@@ -264,11 +222,10 @@ function openExternal(){
     setTimeout(()=> {
       window.location.href = smartLink;
     }, 1200);
-
     return;
   }
 
-  // iOS fallback
+  // iOS
   if(/iphone|ipad|ipod/.test(ua)){
     window.location.href = smartLink;
     return;
@@ -277,7 +234,7 @@ function openExternal(){
   // Desktop
   window.location.href = smartLink;
 }
-  
+</script>
+
 </body>
 </html>
-
