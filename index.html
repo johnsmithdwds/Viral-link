@@ -17,7 +17,6 @@ h1{
   text-align:center;
   padding:18px;
   font-size:22px;
-  font-weight:700;
 }
 
 .grid{
@@ -33,49 +32,12 @@ h1{
   overflow:hidden;
   box-shadow:0 12px 35px rgba(0,0,0,0.8);
   cursor:pointer;
-  position:relative;
-  transition:.3s;
-}
-
-.card:hover{
-  transform:translateY(-6px) scale(1.02);
 }
 
 .card img{
   width:100%;
   height:200px;
   object-fit:cover;
-}
-
-.play{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:32px;
-  background:rgba(0,0,0,0.6);
-  padding:12px;
-  border-radius:50%;
-}
-
-.views{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:rgba(0,0,0,0.7);
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-}
-
-.badge{
-  position:absolute;
-  top:10px;
-  right:10px;
-  background:#22c55e;
-  font-size:11px;
-  padding:4px 10px;
-  border-radius:20px;
 }
 
 .card-body{
@@ -86,20 +48,71 @@ h1{
   font-size:16px;
   font-weight:700;
 }
+
+/* 🔥 POPUP */
+#popup{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.popup-box{
+  background:#111;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  width:280px;
+}
+
+.popup-box button{
+  margin-top:10px;
+  padding:10px;
+  width:100%;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.openBtn{
+  background:#22c55e;
+  color:#fff;
+}
+
+.closeBtn{
+  background:#444;
+  color:#fff;
+}
 </style>
 </head>
 
 <body>
 
 <h1>🔥 Trending Premium Videos</h1>
+
 <div class="grid" id="grid"></div>
 
-<script>
-let popupActive = false;
-let popupCount = 0;
-const maxPopup = 3;
+<!-- ✅ POPUP -->
+<div id="popup">
+  <div class="popup-box">
+    <h3>⚡ Open Required</h3>
+    <p>Open in Chrome to continue</p>
 
-const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+    <button class="openBtn" onclick="openExternal()">OPEN NOW</button>
+    <button class="closeBtn" onclick="closePopup()">Cancel</button>
+  </div>
+</div>
+
+<script>
+
+// 🔥 SMART LINK
+const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
 
 const images = [
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_afc044e6-455a-42e1-a538-d93f0be54d2b.jpg",
@@ -119,6 +132,7 @@ const images = [
 "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
 ];
 
+// TITLES
 const titles = [
 "😱 Viral Shock Moment",
 "🔥 Dangerous Scene Caught",
@@ -137,13 +151,13 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-<script>
-
-// 🔥 YOUR SMART LINK
-const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
-
 const grid = document.getElementById("grid");
 const popup = document.getElementById("popup");
+
+// ✅ IN-APP DETECT
+function isInApp(){
+  return /FBAN|FBAV|Instagram|Telegram/i.test(navigator.userAgent);
+}
 
 // ✅ CREATE CARD
 images.forEach((img,i)=>{
@@ -152,84 +166,67 @@ images.forEach((img,i)=>{
 
   card.innerHTML = `
     <img src="${img}">
-    <div class="play">▶</div>
     <div class="card-body">
       <div class="title">${titles[i]}</div>
-      <button class="download">Open</button>
     </div>
   `;
 
-  // 👉 CLICK CARD → POPUP
-  card.addEventListener("click", (e)=>{
-    // button click হলে popup না দেখায়
-    if(e.target.classList.contains("download")) return;
-    popup.style.display = "flex";
-  });
+  card.onclick = () => {
+    // 👉 যদি in-app হয় → popup
+    if(isInApp()){
+      popup.style.display = "flex";
+    }else{
+      // 👉 direct redirect
+      window.location.href = smartLink;
+    }
+  };
 
   grid.appendChild(card);
 });
-
 
 // ❌ CLOSE POPUP
 function closePopup(){
   popup.style.display = "none";
 }
 
-
-// 🔥 YOUR FUNCTION (FIXED)
+// 🔥 OPEN EXTERNAL
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
 
   const isAndroid = /android/.test(ua);
   const isIOS = /iphone|ipad|ipod/.test(ua);
-  const isTelegram = /telegram/.test(ua);
 
-  // ✅ TELEGRAM
-  if(isTelegram){
-    window.location.href = smartLink;
-    return;
-  }
-
-  // 🔥 ANDROID
+  // ANDROID → Chrome intent
   if(isAndroid){
     window.location.href =
-    "intent://" +
-    smartLink.replace(/^https?:\/\//,'') +
-    "#Intent;scheme=https;package=com.android.chrome;end";
+      "intent://" +
+      smartLink.replace(/^https?:\/\//,'') +
+      "#Intent;scheme=https;package=com.android.chrome;end";
 
-    setTimeout(() => {
+    setTimeout(()=>{
       window.location.href = smartLink;
-    }, 1200);
+    },1500);
   }
 
-  // 🍎 IOS
+  // IOS → Chrome
   else if(isIOS){
     window.location.href =
-    "googlechrome://" +
-    smartLink.replace(/^https?:\/\//,'');
+      "googlechrome://" +
+      smartLink.replace(/^https?:\/\//,'');
 
-    setTimeout(() => {
+    setTimeout(()=>{
       window.location.href = smartLink;
-    }, 1200);
+    },1500);
   }
 
-  // 💻 PC
+  // PC
   else{
     window.location.href = smartLink;
   }
 }
 
-document.addEventListener("click",(e)=>{
-
-  // ✅ Card click → popup show
-  if(e.target.closest(".card")){
-    popup.style.display = "flex";
-  }
-
-});
-
 </script>
-  
+
 </body>
 </html>
