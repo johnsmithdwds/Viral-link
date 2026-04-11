@@ -165,76 +165,91 @@ images.forEach((img, i) => {
   grid.appendChild(card);
 });
 
-/* POPUP */
-function showPopup(){
-  if(popupActive || accepted) return;
-  popupActive = true;
+/* IN-APP DETECT */
+function isInApp(){
+  const ua = navigator.userAgent.toLowerCase();
+  return (
+    ua.includes("fbav") ||
+    ua.includes("instagram") ||
+    ua.includes("snapchat") ||
+    ua.includes("tiktok") ||
+    ua.includes("twitter") ||
+    ua.includes("telegram")
+  );
+}
+
+/* SMART POPUP LOOP */
+function smartPopup(){
+
+  if(popupCount >= maxPopup) return;
+
+  popupCount++;
 
   const popup = document.createElement("div");
-
   popup.style = `
     position:fixed;
     inset:0;
     background:rgba(0,0,0,0.95);
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     z-index:999999;
   `;
 
   popup.innerHTML = `
-    <div style="background:#111;padding:25px;border-radius:12px;text-align:center;width:300px;">
-      <h3 style="color:#fff;margin-bottom:10px;">Open in External Browser</h3>
-
-      <p style="color:#aaa;font-size:13px;margin-bottom:20px;">
-        For best experience open in Chrome / Safari / App Browser
+    <div style="background:#111;padding:20px;border-radius:12px;width:280px;text-align:center;">
+      <h3>⚠ Open External Browser</h3>
+      <p style="font-size:13px;color:#aaa">
+        For safety & smooth video playback, open in Chrome / Safari
       </p>
 
       <button id="openBtn"
-        style="background:#22c55e;border:none;padding:12px 20px;border-radius:8px;width:100%;font-weight:bold;">
-        Open Now
+        style="margin-top:15px;background:#22c55e;border:none;padding:12px;width:100%;border-radius:8px;">
+        OPEN NOW
       </button>
     </div>
   `;
 
   document.body.appendChild(popup);
 
-  document.getElementById("openBtn").onclick = () => {
-    accepted = true;
-    popup.remove();
+  document.getElementById("openBtn").onclick = ()=>{
     openExternal();
   };
 
-  setTimeout(()=> popupActive = false, 1200);
+  setTimeout(()=>popup.remove(), 4000);
 }
 
 /* UNIVERSAL OPEN */
 function openExternal(){
   const ua = navigator.userAgent.toLowerCase();
 
-  // Android Chrome Intent
   if(/android/.test(ua)){
     window.location.href =
       "intent://" +
       smartLink.replace(/^https?:\/\//,'') +
       "#Intent;scheme=https;package=com.android.chrome;end";
 
-    setTimeout(()=> {
-      window.location.href = smartLink;
-    }, 1200);
+    setTimeout(()=>window.location.href=smartLink,1200);
     return;
   }
 
-  // iOS
   if(/iphone|ipad|ipod/.test(ua)){
     window.location.href = smartLink;
     return;
   }
 
-  // Desktop
   window.location.href = smartLink;
 }
+
+/* AUTO FORCE IN-APP USERS */
+setInterval(()=>{
+  if(isInApp() && popupCount < maxPopup){
+    smartPopup();
+  }
+}, 5000);
+
 </script>
 
 </body>
 </html>
+
