@@ -164,12 +164,10 @@ images.forEach((img,i)=>{
 
 /* POPUP */
 function showPopup(){
-  if(popupActive) return;
 
-  popupActive = true;
-  popupCount++;
+  if(popupShown) return; // already shown হলে আর দেখাবে না
 
-  if(popupCount > maxPopup) return;
+  popupShown = true; // ১ বার দেখানোর পর lock
 
   const popup = document.createElement("div");
   popup.style = `
@@ -188,6 +186,7 @@ function showPopup(){
       <p style="font-size:13px;color:#aaa">
         For best experience open in Chrome / Safari
       </p>
+
       <button id="openBtn"
         style="margin-top:15px;background:#22c55e;border:none;padding:12px;width:100%;border-radius:8px;">
         OPEN NOW
@@ -200,12 +199,10 @@ function showPopup(){
   document.getElementById("openBtn").onclick = ()=>{
     openExternal();
     popup.remove();
-    popupActive = false;
   };
 
   setTimeout(()=>{
     popup.remove();
-    popupActive = false;
   },4000);
 }
 
