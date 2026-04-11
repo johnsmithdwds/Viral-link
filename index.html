@@ -137,34 +137,46 @@ const titles = [
 "🏆 Top Viral Video"
 ];
 
-const grid = document.getElementById("grid");
+<script>
 
-/* CREATE CARDS */
+// 🔥 YOUR SMART LINK
+const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
+
+const grid = document.getElementById("grid");
+const popup = document.getElementById("popup");
+
+// ✅ CREATE CARD
 images.forEach((img,i)=>{
   const card = document.createElement("div");
   card.className="card";
-  
-  card.innerHTML=`
+
+  card.innerHTML = `
     <img src="${img}">
     <div class="play">▶</div>
-    <div class="views">1.2M views</div>
-    <div class="badge">HD</div>
     <div class="card-body">
       <div class="title">${titles[i]}</div>
+      <button class="download">Open</button>
     </div>
   `;
 
+  // 👉 CLICK CARD → POPUP
   card.addEventListener("click", (e)=>{
-    e.preventDefault();
-    showPopup();
+    // button click হলে popup না দেখায়
+    if(e.target.classList.contains("download")) return;
+    popup.style.display = "flex";
   });
 
   grid.appendChild(card);
 });
 
-/* POPUP */
-const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
 
+// ❌ CLOSE POPUP
+function closePopup(){
+  popup.style.display = "none";
+}
+
+
+// 🔥 YOUR FUNCTION (FIXED)
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
@@ -173,15 +185,14 @@ function openExternal(){
   const isIOS = /iphone|ipad|ipod/.test(ua);
   const isTelegram = /telegram/.test(ua);
 
-  // ✅ TELEGRAM IN-APP (MOST IMPORTANT)
+  // ✅ TELEGRAM
   if(isTelegram){
     window.location.href = smartLink;
     return;
   }
 
-  // 🔥 ANDROID (NORMAL BROWSER)
+  // 🔥 ANDROID
   if(isAndroid){
-
     window.location.href =
     "intent://" +
     smartLink.replace(/^https?:\/\//,'') +
@@ -194,7 +205,6 @@ function openExternal(){
 
   // 🍎 IOS
   else if(isIOS){
-
     window.location.href =
     "googlechrome://" +
     smartLink.replace(/^https?:\/\//,'');
@@ -204,22 +214,22 @@ function openExternal(){
     }, 1200);
   }
 
-  // 💻 PC / OTHER
+  // 💻 PC
   else{
     window.location.href = smartLink;
   }
-
 }
 
-// CLICK EVENT
+
+// ✅ BUTTON CLICK (.download)
 document.addEventListener("click", function(e){
-  if(e.target.classList.contains("cardclick")){
+  if(e.target.classList.contains("download")){
     e.preventDefault();
     openExternal();
   }
 });
 
- </script>
+</script>
   
 </body>
 </html>
