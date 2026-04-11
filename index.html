@@ -33,6 +33,11 @@ h1{
   box-shadow:0 12px 35px rgba(0,0,0,0.8);
   position:relative;
   cursor:pointer;
+  transition: transform 0.2s;
+}
+
+.card:hover{
+  transform: scale(1.03);
 }
 
 .card img{
@@ -50,6 +55,7 @@ h1{
   background:rgba(0,0,0,0.6);
   padding:12px;
   border-radius:50%;
+  pointer-events: none;
 }
 
 .views{
@@ -92,13 +98,24 @@ h1{
 
 const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
 
-// 🔥 Popup function
+// Flag to prevent spamming clicks
+let isPopupOpen = false;
+
 function smartPopup() {
-  // Show a strong alert to notify the user
+  if (isPopupOpen) return; // Prevent multiple rapid clicks
+
+  isPopupOpen = true;
+
   const userConfirmed = confirm("⚠️ Attention! You are about to open a new video in an external browser. Would you like to continue?");
+
   if (userConfirmed) {
-    window.open(smartLink, "_blank"); // Open the link in an external browser
+    window.open(smartLink, "_blank");
   }
+
+  // Reset the flag after a short delay (prevents spam clicking)
+  setTimeout(() => {
+    isPopupOpen = false;
+  }, 800);
 }
 
 // Content
@@ -122,7 +139,7 @@ images.forEach((img, i) => {
   card.className = "card";
 
   card.innerHTML = `
-    <img src="${img}">
+    <img src="${img}" alt="${titles[i]}">
     <div class="play">▶</div>
     <div class="views">1.2M views</div>
     <div class="badge">HD</div>
@@ -131,16 +148,19 @@ images.forEach((img, i) => {
     </div>
   `;
 
-  // ✅ CLICK FIX (IMPORTANT)
-  card.onclick = function() {
-    smartPopup(); // Open the popup when the card is clicked
-  };
-
   grid.appendChild(card);
+});
+
+// ✅ Best practice: Event Delegation (only ONE listener)
+grid.addEventListener('click', function(e) {
+  // Check if the clicked element is inside a .card
+  const card = e.target.closest('.card');
+  if (card) {
+    smartPopup();
+  }
 });
 
 </script>
 
 </body>
 </html>
-
