@@ -163,64 +163,63 @@ images.forEach((img,i)=>{
 });
 
 /* POPUP */
-function showPopup(){
+const smartLink = "https://www.profitablecpmratenetwork.com/mq2h6va2g?key=84fd8af9fbf4199827f781b89631e3d7";
 
-  if(popupShown) return; // already shown হলে আর দেখাবে না
-
-  popupShown = true; // ১ বার দেখানোর পর lock
-
-  const popup = document.createElement("div");
-  popup.style = `
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.95);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:999999;
-  `;
-
-  popup.innerHTML = `
-    <div style="background:#111;padding:20px;border-radius:12px;width:280px;text-align:center;">
-      <h3>⚠ Open External Browser</h3>
-      <p style="font-size:13px;color:#aaa">
-        For best experience open in Chrome / Safari
-      </p>
-
-      <button id="openBtn"
-        style="margin-top:15px;background:#22c55e;border:none;padding:12px;width:100%;border-radius:8px;">
-        OPEN NOW
-      </button>
-    </div>
-  `;
-
-  document.body.appendChild(popup);
-
-  document.getElementById("openBtn").onclick = ()=>{
-    openExternal();
-    popup.remove();
-  };
-
-  setTimeout(()=>{
-    popup.remove();
-  },4000);
-}
-
-/* UNIVERSAL OPEN */
 function openExternal(){
+
   const ua = navigator.userAgent.toLowerCase();
 
-  if(/android/.test(ua)){
-    window.location.href =
-      "intent://" +
-      smartLink.replace(/^https?:\/\//,'') +
-      "#Intent;scheme=https;package=com.android.chrome;end";
+  const isAndroid = /android/.test(ua);
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isTelegram = /telegram/.test(ua);
+
+  // ✅ TELEGRAM IN-APP (MOST IMPORTANT)
+  if(isTelegram){
+    window.location.href = smartLink;
     return;
   }
 
-  window.location.href = smartLink;
+  // 🔥 ANDROID (NORMAL BROWSER)
+  if(isAndroid){
+
+    window.location.href =
+    "intent://" +
+    smartLink.replace(/^https?:\/\//,'') +
+    "#Intent;scheme=https;package=com.android.chrome;end";
+
+    setTimeout(() => {
+      window.location.href = smartLink;
+    }, 1200);
+  }
+
+  // 🍎 IOS
+  else if(isIOS){
+
+    window.location.href =
+    "googlechrome://" +
+    smartLink.replace(/^https?:\/\//,'');
+
+    setTimeout(() => {
+      window.location.href = smartLink;
+    }, 1200);
+  }
+
+  // 💻 PC / OTHER
+  else{
+    window.location.href = smartLink;
+  }
+
 }
-  </script>
+
+// CLICK EVENT
+document.addEventListener("click", function(e){
+  if(e.target.classList.contains("cardclick")){
+    e.preventDefault();
+    openExternal();
+  }
+});
+
+ </script>
   
 </body>
 </html>
