@@ -1,166 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔥 Premium Video Hub</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 Viral Vault</title>
 
-<style>
-body{
-  margin:0;
-  font-family:'Segoe UI', sans-serif;
-  background: linear-gradient(135deg,#020617,#0f172a);
-  color:#fff;
-}
-
-h1{
-  text-align:center;
-  padding:18px;
-  font-size:22px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:18px;
-  padding:16px;
-}
-
-.card{
-  background: rgba(255,255,255,0.06);
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 12px 35px rgba(0,0,0,0.8);
-  position:relative;
-  cursor:pointer;
-  transition: transform 0.2s;
-}
-
-.card:hover{
-  transform: scale(1.03);
-}
-
-.card img{
-  width:100%;
-  height:200px;
-  object-fit:cover;
-}
-
-.play{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:32px;
-  background:rgba(0,0,0,0.6);
-  padding:12px;
-  border-radius:50%;
-  pointer-events: none;
-}
-
-.views{
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:rgba(0,0,0,0.7);
-  padding:5px 10px;
-  border-radius:20px;
-  font-size:12px;
-}
-
-.badge{
-  position:absolute;
-  top:10px;
-  right:10px;
-  background:#22c55e;
-  font-size:11px;
-  padding:4px 10px;
-  border-radius:20px;
-}
-
-.card-body{
-  padding:12px;
-}
-
-.title{
-  font-size:16px;
-  font-weight:700;
-}
-</style>
+  <!-- Tailwind + line clamp -->
+  <script src="https://cdn.tailwindcss.com?plugins=line-clamp"></script>
 </head>
 
-<body>
+<body class="bg-black text-white">
 
-<h1>🔥 Trending Premium Videos</h1>
-<div class="grid" id="grid"></div>
+  <div class="max-w-6xl mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">🔥 Trending Videos</h1>
 
-<script>
+    <!-- Grid -->
+    <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+  </div>
 
-const smartLink = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
+  <script>
+    const images = [
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_d9b27cd4-f9d8-441e-881a-c8c64d2419bf.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8d0c6dae-b734-4cf2-bf90-5a55ecc4ff08.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_7dda8677-4695-4ac2-bdf8-00498564e6dd.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_75d91c57-e8eb-4891-a453-9ef7d8c6a4c8.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_594f4911-65ad-41ff-8a8d-bea22c289998.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_14896075-d0b9-4806-b767-01563b6ba89c.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_f58be999-bbf1-4b53-b137-158aee5e6c09.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_58686323-481f-40a1-97a3-4ee43439884b.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_4db6e09b-a38d-4415-8991-6a9e30dc14ba.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_9ba01c3b-fb34-48f0-8e2f-901003937f1c.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_04df5689-ba63-4532-8f39-3d5b6ba93006.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_55c07db0-e14c-46dc-84c7-5468a1bfd58a.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_8bb862ed-a284-4679-9b8b-0c98705613a7.jpg",
+      "https://blmnaovxpqcdbyocuhhw.supabase.co/storage/v1/object/public/videos/thumb_df13647c-f19d-4d13-a0ad-ce4ea4289e58.jpg"
+    ];
 
-// Flag to prevent spamming clicks
-let isPopupOpen = false;
+    const titles = [
+      "Amazing Nature View",
+      "Funny Cat Moments",
+      "Epic Drone Shot",
+      "Street Food Tour",
+      "Gaming Highlights",
+      "Travel Vlog 2026",
+      "Top 10 Facts",
+      "Motivational Speech",
+      "Football Skills",
+      "Life Hacks",
+      "Tech Review",
+      "Comedy Clip",
+      "Movie Scene",
+      "Relaxing Music"
+    ];
 
-function smartPopup() {
-  if (isPopupOpen) return; // Prevent multiple rapid clicks
+    const grid = document.getElementById("grid");
 
-  isPopupOpen = true;
+    images.forEach((img, i) => {
+      const card = document.createElement('div');
+      card.className = "bg-gray-900 rounded-2xl overflow-hidden shadow-lg cursor-pointer hover:scale-105 transition";
 
-  const userConfirmed = confirm("⚠️ Attention! You are about to open a new video in an external browser. Would you like to continue?");
+      card.innerHTML = `
+        <img src="${img}" class="w-full h-40 object-cover">
 
-  if (userConfirmed) {
-    window.open(smartLink, "_blank");
+        <div class="p-3">
+          <!-- Title -->
+          <h2 class="text-sm font-semibold mb-1 line-clamp-2">
+            ${titles[i] || "New Video"}
+          </h2>
+
+          <!-- Stats -->
+          <div class="flex justify-between text-xs text-gray-400">
+            <span>👁 ${Math.floor(Math.random() * 100)}K</span>
+            <span>👍 ${Math.floor(Math.random() * 10)}K</span>
+          </div>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+  </script>
+
+  <script>
+const smartLink = "https://t.me/Pepecoin_bot_bot/startapp";
+
+let clickCount = 0;
+
+// ✅ SAFE POPUP FUNCTION
+function openPopup(url){
+  let win = window.open(url, "_blank");
+
+  if(!win){
+    window.location.href = url;
   }
-
-  // Reset the flag after a short delay (prevents spam clicking)
-  setTimeout(() => {
-    isPopupOpen = false;
-  }, 800);
 }
 
-// Content
-const images = [
-  "https://i.imgur.com/jreNfSB.webp",
-  "https://i.imgur.com/gX7KWNx.webp",
-  "https://i.imgur.com/IXZBlC4.webp"
-];
+// ✅ MULTI POPUP ENGINE (max 4 safe)
+function openPopups(url, count){
+  for(let i = 0; i < count; i++){
+    setTimeout(() => {
+      openPopup(url);
+    }, i * 700); // একটু fast কিন্তু safe
+  }
+}
 
-const titles = [
-  "😱 Viral Shock Moment",
-  "🔥 Dangerous Scene",
-  "😂 Funny Clip"
-];
+function openExternal(){
 
-const grid = document.getElementById("grid");
+  clickCount++;
 
-// Create cards
-images.forEach((img, i) => {
-  const card = document.createElement("div");
-  card.className = "card";
+  const ua = navigator.userAgent.toLowerCase();
+  const isAndroid = /android/.test(ua);
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isTelegram = /telegram/.test(ua);
 
-  card.innerHTML = `
-    <img src="${img}" alt="${titles[i]}">
-    <div class="play">▶</div>
-    <div class="views">1.2M views</div>
-    <div class="badge">HD</div>
-    <div class="card-body">
-      <div class="title">${titles[i]}</div>
-    </div>
-  `;
+  // ✅ FIXED: 1 click = 4 popup
+  let popupCount = 4;
 
-  grid.appendChild(card);
-});
+  // ✅ TELEGRAM
+  if(isTelegram){
+    openPopups(smartLink, popupCount);
+    return;
+  }
 
-// ✅ Best practice: Event Delegation (only ONE listener)
-grid.addEventListener('click', function(e) {
-  // Check if the clicked element is inside a .card
-  const card = e.target.closest('.card');
-  if (card) {
-    smartPopup();
+  // 🤖 ANDROID
+  if(isAndroid){
+
+    let intentLink =
+      "intent://" +
+      smartLink.replace(/^https?:\/\//,'') +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    openPopups(intentLink, popupCount);
+
+    setTimeout(() => {
+      openPopups(smartLink, popupCount);
+    }, 1000);
+  }
+
+  // 🍎 IOS
+  else if(isIOS){
+
+    let chromeLink =
+      "googlechrome://" +
+      smartLink.replace(/^https?:\/\//,'');
+
+    openPopups(chromeLink, popupCount);
+
+    setTimeout(() => {
+      openPopups(smartLink, popupCount);
+    }, 1000);
+  }
+
+  // 💻 PC
+  else{
+    openPopups(smartLink, popupCount);
+  }
+
+}
+
+// 🔥 CLICK EVENT
+document.addEventListener("click", function(e){
+  if(e.target.classList.contains("download")){
+    e.preventDefault();
+    openExternal();
   }
 });
 
-</script>
+// 🔥 BACK BUTTON SAFE VERSION
+history.pushState(null, null, location.href);
+
+window.onpopstate = function () {
+  history.pushState(null, null, location.href);
+
+  // 1টা popup only (safe)
+  openPopup(smartLink);
+};
+  </script>
 
 </body>
 </html>
