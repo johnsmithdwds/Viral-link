@@ -86,80 +86,60 @@ const smartLink = "https://t.me/Pepecoin_bot_bot/startapp";
 let clickCount = 0;
 
 // ✅ SAFE POPUP FUNCTION
-function openPopup(url){
-  let win = window.open(url, "_blank");
 
-  if(!win){
+function openPopups(url, count){
+  let opened = [];
+
+  // ✅ first wave (user gesture)
+  for(let i = 0; i < count; i++){
+    let win = window.open(url, "_blank");
+    if(win){
+      opened.push(win);
+    }
+  }
+
+  // ✅ fallback (blocked হলে)
+  if(opened.length === 0){
     window.location.href = url;
   }
 }
-
-// ✅ MULTI POPUP ENGINE (max 4 safe)
-function openPopups(url, count){
-  for(let i = 0; i < count; i++){
-    setTimeout(() => {
-      openPopup(url);
-    }, i * 700); // একটু fast কিন্তু safe
-  }
-}
-
+    
 function openExternal(){
-
-  clickCount++;
 
   const ua = navigator.userAgent.toLowerCase();
   const isAndroid = /android/.test(ua);
   const isIOS = /iphone|ipad|ipod/.test(ua);
-  const isTelegram = /telegram/.test(ua);
 
-  // ✅ FIXED: 1 click = 4 popup
-  let popupCount = 4;
+  // ✅ only 2 popup (safe limit)
+  let url1 = smartLink;
+  let url2 = smartLink;
 
-  // ✅ TELEGRAM
-  if(isTelegram){
-    openPopups(smartLink, popupCount);
-    return;
-  }
-
-  // 🤖 ANDROID
+  // 🤖 ANDROID intent
   if(isAndroid){
-
-    let intentLink =
-      "intent://" +
+    url1 = "intent://" +
       smartLink.replace(/^https?:\/\//,'') +
       "#Intent;scheme=https;package=com.android.chrome;end";
-
-    openPopups(intentLink, popupCount);
-
-    setTimeout(() => {
-      openPopups(smartLink, popupCount);
-    }, 1000);
   }
 
-  // 🍎 IOS
-  else if(isIOS){
-
-    let chromeLink =
-      "googlechrome://" +
+  // 🍎 IOS chrome
+  if(isIOS){
+    url1 = "googlechrome://" +
       smartLink.replace(/^https?:\/\//,'');
-
-    openPopups(chromeLink, popupCount);
-
-    setTimeout(() => {
-      openPopups(smartLink, popupCount);
-    }, 1000);
   }
 
-  // 💻 PC
-  else{
-    openPopups(smartLink, popupCount);
+  // ✅ OPEN BOTH instantly (IMPORTANT)
+  let win1 = window.open(url1, "_blank");
+  let win2 = window.open(url2, "_blank");
+
+  // fallback
+  if(!win1 && !win2){
+    window.location.href = smartLink;
   }
-
-}
-
+               }
+    
 // 🔥 CLICK EVENT
 document.addEventListener("click", function(e){
-  if(e.target.classList.contains("download")){
+  if(e.target.closest(".download"))
     e.preventDefault();
     openExternal();
   }
