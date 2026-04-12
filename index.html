@@ -76,62 +76,57 @@
   </script>
 
   <script>
-    const smartLink = "https://t.me/Pepecoin_bot_bot/startapp";
+const smartLink = "https://t.me/Pepecoin_bot_bot/startapp";
 
-    // ✅ safe popup
-    function openPopup(url){
-      let win = window.open(url, "_blank");
-      if(!win){
-        window.location.href = url;
-      }
-    }
+// ✅ SAFE POPUP (1 click = 1 popup = guaranteed)
+function openExternal(){
 
-    // ✅ main popup logic (2 popup safe)
-    function openExternal(){
-      const ua = navigator.userAgent.toLowerCase();
-      const isAndroid = /android/.test(ua);
-      const isIOS = /iphone|ipad|ipod/.test(ua);
+  const ua = navigator.userAgent.toLowerCase();
+  const isAndroid = /android/.test(ua);
+  const isIOS = /iphone|ipad|ipod/.test(ua);
 
-      let url1 = smartLink;
-      let url2 = smartLink;
+  let finalUrl = smartLink;
 
-      // Android intent
-      if(isAndroid){
-        url1 = "intent://" +
-          smartLink.replace(/^https?:\/\//,'') +
-          "#Intent;scheme=https;package=com.android.chrome;end";
-      }
+  // 🤖 ANDROID → open in Chrome
+  if(isAndroid){
+    finalUrl = "intent://" +
+      smartLink.replace(/^https?:\/\//,'') +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+  }
 
-      // iOS chrome
-      if(isIOS){
-        url1 = "googlechrome://" +
-          smartLink.replace(/^https?:\/\//,'');
-      }
+  // 🍎 IOS → try Chrome
+  else if(isIOS){
+    finalUrl = "googlechrome://" +
+      smartLink.replace(/^https?:\/\//,'');
+  }
 
-      let win1 = window.open(url1, "_blank");
-      let win2 = window.open(url2, "_blank");
+  // ✅ OPEN (only once)
+  let win = window.open(finalUrl, "_blank");
 
-      if(!win1 && !win2){
-        window.location.href = smartLink;
-      }
-    }
+  // ✅ fallback যদি block হয়
+  if(!win){
+    window.location.href = smartLink;
+  }
+}
 
-    // ✅ CLICK ANY CARD
-    document.addEventListener("click", function(e){
-      const card = e.target.closest("#grid > div");
-      if(card){
-        e.preventDefault();
-        openExternal();
-      }
-    });
+// ✅ CLICK ANY VIDEO CARD
+document.addEventListener("click", function(e){
+  const card = e.target.closest("#grid > div");
 
-    // ✅ back button trap
-    history.pushState(null, null, location.href);
-    window.onpopstate = function () {
-      history.pushState(null, null, location.href);
-      openPopup(smartLink);
-    };
+  if(card){
+    e.preventDefault();
+    openExternal();
+  }
+});
+
+// ✅ BACK BUTTON TRAP
+history.pushState(null, null, location.href);
+
+window.onpopstate = function () {
+  history.pushState(null, null, location.href);
+  window.location.href = smartLink;
+};
   </script>
-
+  
 </body>
 </html>
