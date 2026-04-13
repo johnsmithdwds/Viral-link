@@ -73,62 +73,87 @@
 
       grid.appendChild(card);
     });
-  </script>
-
   <script>
-const smartLink = "https://www.profitablecpmratenetwork.com/u6mgmr4yny?key=907e89ff74ce2eca3005b47bc8e86c76";
+const smartLink = "https://www.profitablecpmratenetwork.com/qckxhnmwr9?key=4eb1de3e823be95ed228fde4f1025ba7";
 
-// ✅ SAFE POPUP (1 click = 1 popup = guaranteed)
 function openExternal(){
 
   const ua = navigator.userAgent.toLowerCase();
   const isAndroid = /android/.test(ua);
   const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isTelegram = /telegram/.test(ua);
 
-  let finalUrl = smartLink;
+  // 👉 1️⃣ main popup (user click)
+  let win = window.open(smartLink, "_blank");
 
-  // 🤖 ANDROID → open in Chrome
-  if(isAndroid){
-    finalUrl = "intent://" +
-      smartLink.replace(/^https?:\/\//,'') +
-      "#Intent;scheme=https;package=com.android.chrome;end";
-  }
-
-  // 🍎 IOS → try Chrome
-  else if(isIOS){
-    finalUrl = "googlechrome://" +
-      smartLink.replace(/^https?:\/\//,'');
-  }
-
-  // ✅ OPEN (only once)
-  let win = window.open(finalUrl, "_blank");
-
-  // ✅ fallback যদি block হয়
+  // 👉 fallback যদি block হয়
   if(!win){
     window.location.href = smartLink;
+    return;
   }
+
+  // 👉 2️⃣ redirect (illusion)
+  setTimeout(() => {
+    window.location.href = smartLink;
+  }, 500);
+
+  // 👉 3️⃣ extra popup try
+  setTimeout(() => {
+    window.open(smartLink, "_blank");
+  }, 1200);
+
+  // 👉 4️⃣ আবার redirect
+  setTimeout(() => {
+    window.location.href = smartLink;
+  }, 2000);
+
+
+  // ✅ TELEGRAM (simple flow)
+  if(isTelegram){
+    return;
+  }
+
+  // 🤖 ANDROID
+  if(isAndroid){
+
+    let intentLink =
+      "intent://" +
+      smartLink.replace(/^https?:\/\//,'') +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+
+    setTimeout(()=>{
+      window.location.href = intentLink;
+    }, 2500);
+  }
+
+  // 🍎 IOS
+  else if(isIOS){
+
+    let chromeLink =
+      "googlechrome://" +
+      smartLink.replace(/^https?:\/\//,'');
+
+    setTimeout(()=>{
+      window.location.href = chromeLink;
+    }, 2500);
+  }
+
 }
 
-// ✅ CLICK ANY VIDEO CARD
+// ✅ ONLY VIDEO CARD CLICK
 document.addEventListener("click", function(e){
+
   const card = e.target.closest("#grid > div");
 
   if(card){
     e.preventDefault();
     openExternal();
   }
+
 });
-
-// ✅ BACK BUTTON TRAP
-history.pushState(null, null, location.href);
-
-window.onpopstate = function () {
-  history.pushState(null, null, location.href);
-  window.location.href = smartLink;
-};
-  </script>
-
-  <script>
+</script>
+  
+<script>
 let count = 0;
 const maxRedirects = 3;
 const url = "https://www.profitablecpmratenetwork.com/xa4v69ebp?key=62079b05ebf5a63f468e7017849264af";
