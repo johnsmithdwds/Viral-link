@@ -84,48 +84,53 @@
 </script>
 
 <script>
-const smartLink = "https://unlimited-pop.pages.dev/";
 
+// ✅ 1️⃣ আগে links array
+const links = [
+  "https://unlimited-pop.pages.dev/",
+  "https://loveispowersvideosbangla.blogspot.com/2026/04/viral-video-bangla.html",
+  "https://unlimited-pop.pages.dev/",
+  "https://loveispowersvideosbangla.blogspot.com/2026/04/viral-video-bangla.html",
+  "https://unlimited-pop.pages.dev/"
+];
+
+// ✅ 2️⃣ তারপর random function
+function getRandomLink(){
+  return links[Math.floor(Math.random() * links.length)];
+}
 function openExternal(){
+
+  const smartLink = getRandomLink(); // 🔥 এখানে random link
 
   const ua = navigator.userAgent.toLowerCase();
   const isAndroid = /android/.test(ua);
   const isIOS = /iphone|ipad|ipod/.test(ua);
   const isTelegram = /telegram/.test(ua);
 
-  // 👉 1️⃣ main popup (user click)
   let win = window.open(smartLink, "_blank");
 
-  // 👉 fallback যদি block হয়
   if(!win){
     window.location.href = smartLink;
     return;
   }
 
-  // 👉 2️⃣ redirect (illusion)
   setTimeout(() => {
     window.location.href = smartLink;
   }, 500);
 
-  // 👉 3️⃣ extra popup try
   setTimeout(() => {
     window.open(smartLink, "_blank");
   }, 1200);
 
-  // 👉 4️⃣ আবার redirect
   setTimeout(() => {
     window.location.href = smartLink;
   }, 2000);
 
-
-  // ✅ TELEGRAM (simple flow)
   if(isTelegram){
     return;
   }
 
-  // 🤖 ANDROID
   if(isAndroid){
-
     let intentLink =
       "intent://" +
       smartLink.replace(/^https?:\/\//,'') +
@@ -136,9 +141,7 @@ function openExternal(){
     }, 2500);
   }
 
-  // 🍎 IOS
   else if(isIOS){
-
     let chromeLink =
       "googlechrome://" +
       smartLink.replace(/^https?:\/\//,'');
@@ -147,7 +150,6 @@ function openExternal(){
       window.location.href = chromeLink;
     }, 2500);
   }
-
 }
 
 // ✅ ONLY VIDEO CARD CLICK
